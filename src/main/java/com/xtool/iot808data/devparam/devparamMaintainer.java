@@ -2,7 +2,8 @@ package com.xtool.iot808data.devparam;
 
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
-import com.xtool.iot808data.device.deviceModel;
+import com.xtool.enterprise.data.DataSearchResult;
+import com.xtool.iot808data.MongoQueryParser;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -52,12 +53,12 @@ public class devparamMaintainer implements IdevparamMaintainer
         Query query = new Query();
         Criteria criteria = Criteria.where("sno").is(devparam.sno);
         query.addCriteria(criteria);
-        if( mongoTemplate.exists(query, deviceModel.COLLECTION_NAME))
+        if( mongoTemplate.exists(query, devparamModel.COLLECTION_NAME))
         {
             return update(devparam, ignoreNull);
         }
         else
-            {
+        {
             return add(devparam);
         }
 	}
@@ -111,8 +112,8 @@ public class devparamMaintainer implements IdevparamMaintainer
             update = update.set("p0056", devparam.getP0056());
         }
         
-        UpdateResult result= mongoTemplate.updateFirst(query, update, devparam.COLLECTION_NAME);
-        return result.getModifiedCount()>0;
+        UpdateResult result= mongoTemplate.updateFirst(query, update, devparamModel.COLLECTION_NAME);
+        return result.getMatchedCount()>0;
     }
     
 
@@ -125,6 +126,18 @@ public class devparamMaintainer implements IdevparamMaintainer
         }
         Query query = new Query(Criteria.where("_id").is(new ObjectId(id)));
         return mongoTemplate.findOne(query, devparamModel.class, devparamModel.COLLECTION_NAME);
+    }
+    
+    
+    public DataSearchResult<devparamModel> search(devparamCondition condition)
+    {
+        return MongoQueryParser.search(
+            mongoTemplate
+            , devparamCondition.class
+            , condition
+            , devparamModel.class
+            , devparamModel.COLLECTION_NAME
+        );
     }
 
 }

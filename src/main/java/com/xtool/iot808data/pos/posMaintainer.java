@@ -1,6 +1,8 @@
 package com.xtool.iot808data.pos;
 
 import com.sun.org.apache.xerces.internal.impl.xpath.regex.Match;
+import com.xtool.enterprise.data.DataSearchResult;
+import com.xtool.iot808data.MongoQueryParser;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.BulkOperations;
@@ -82,5 +84,19 @@ public class posMaintainer implements IposMaintainer
     {
         return null;
     }
-
+    
+    
+    @Override
+    public DataSearchResult<posModel> search(posCondition condition)
+    {
+        return MongoQueryParser.search(
+            mongoTemplate
+            , posCondition.class
+            , condition
+            , posModel.class
+            , posModel.COLLECTION_NAME
+        );
+    }
+    
+    
 }

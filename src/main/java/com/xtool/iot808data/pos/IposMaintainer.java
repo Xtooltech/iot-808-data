@@ -1,5 +1,7 @@
 package com.xtool.iot808data.pos;
 
+import com.xtool.enterprise.data.DataSearchResult;
+
 import java.util.List;
 
 public interface IposMaintainer
@@ -9,4 +11,5 @@ public interface IposMaintainer
 	boolean updateGaodeLocationRange(posModel[] positions);
 	posModel getById(String id);
 	List<String> getAllDevicesLastedPos();
+    DataSearchResult<posModel> search(posCondition condition);
 }

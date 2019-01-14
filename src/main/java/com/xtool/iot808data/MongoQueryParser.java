@@ -96,7 +96,15 @@ public class MongoQueryParser {
 		case Matchs:
 			return Criteria.where(condition.getField()).regex(".*"+condition.getValues()[0].toString()+".*","is");
 		case Between:
-			return Criteria.where(condition.getField()).gte(condition.getValues()[0]).and(condition.getField()).lte(condition.getValues()[1]);
+        {
+            // xiabing 修复于 2019/1/4
+            // you can't add a second 'xxx' expression 异常
+            Criteria criteria = new Criteria();
+            criteria.andOperator(Criteria.where(condition.getField()).gte(condition.getValues()[0]),
+                                 Criteria.where(condition.getField()).lte(condition.getValues()[1]));
+            return criteria;
+        }
+//			return Criteria.where(condition.getField()).gte(condition.getValues()[0]).and(condition.getField()).lte(condition.getValues()[1]);
 		case NotNull:
 			return Criteria.where(condition.getField()).ne(BsonNull.VALUE);
 		case In:
