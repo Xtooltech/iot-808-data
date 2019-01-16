@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class DevStatMaintainerAutoConfiguration {
 	@Bean
-	public devstatMaintainer createInOrderMaintainer() {
+	public devstatMaintainer createDevStatMaintainer() {
 		return new devstatMaintainer();
 	}
 }
