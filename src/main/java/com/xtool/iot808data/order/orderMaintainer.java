@@ -38,7 +38,7 @@ public class orderMaintainer implements IorderMaintainer {
 		update.set("amount", amnt);
 		update.set("etime", etime);
 		
-		UpdateResult result= mongoTemplate.updateFirst(query, update, orderModel.COLLECTION_NAME);
+		UpdateResult result= mongoTemplate.updateMulti(query, update, orderModel.COLLECTION_NAME);
 		return result.getModifiedCount()>0;
 	}
 	

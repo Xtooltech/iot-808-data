@@ -112,7 +112,7 @@ public class devparamMaintainer implements IdevparamMaintainer
             update = update.set("p0056", devparam.getP0056());
         }
         
-        UpdateResult result= mongoTemplate.updateFirst(query, update, devparamModel.COLLECTION_NAME);
+        UpdateResult result= mongoTemplate.updateMulti(query, update, devparamModel.COLLECTION_NAME);
         return result.getMatchedCount()>0;
     }
     

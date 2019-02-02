@@ -42,7 +42,7 @@ public class devstatMaintainer implements IdevstatMaintainer {
 		if(data.stat!=null || !ignoreNull)update=update.set("stat", data.stat);
 		if(data.exitems!=null || !ignoreNull)update=update.set("exitems", data.exitems);
 		
-		UpdateResult result= mongoTemplate.updateFirst(query, update, devstatModel.COLLECTION_NAME);
+		UpdateResult result= mongoTemplate.updateMulti(query, update, devstatModel.COLLECTION_NAME);
 		return result.getModifiedCount()>0;
 	}
 

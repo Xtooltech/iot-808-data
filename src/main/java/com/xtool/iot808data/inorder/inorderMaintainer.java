@@ -51,7 +51,7 @@ public class inorderMaintainer implements IinorderMaintainer {
 		if(data.lat!=null || !ignoreNull)update=update.set("lat", data.lat);
 		if(data.btime!=null || !ignoreNull)update=update.set("btime", data.btime);
 		
-		UpdateResult result= mongoTemplate.updateFirst(query, update, inorderModel.COLLECTION_NAME);
+		UpdateResult result= mongoTemplate.updateMulti(query, update, inorderModel.COLLECTION_NAME);
 		return result.getModifiedCount()>0;
 	}
 

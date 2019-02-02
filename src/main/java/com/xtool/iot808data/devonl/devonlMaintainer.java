@@ -73,7 +73,7 @@ public class devonlMaintainer implements IdevonlMaintainer {
 		if(data.reftime!=null || !ignoreNull)update=update.set("reftime", data.reftime);
 		if(data.refdura!=null || !ignoreNull)update=update.set("refdura", data.refdura);
 		if(data.offtime!=null || !ignoreNull)update=update.set("offtime", data.offtime);
-		UpdateResult result= mongoTemplate.updateFirst(query, update, devonlModel.COLLECTION_NAME);
+		UpdateResult result= mongoTemplate.updateMulti(query, update, devonlModel.COLLECTION_NAME);
 		return result.getModifiedCount()>0;
 	}
 

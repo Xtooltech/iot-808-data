@@ -67,7 +67,7 @@ public class deviceMaintainer implements IdeviceMaintainer {
 		if(data.hwver!=null || !ignoreNull)update=update.set("hwver", data.hwver);
 		if(data.swver!=null || !ignoreNull)update=update.set("swver", data.swver);
 		if(data.otgid!=null || !ignoreNull)update=update.set("otgid", data.otgid);
-		UpdateResult result= mongoTemplate.updateFirst(query, update, deviceModel.COLLECTION_NAME);
+		UpdateResult result= mongoTemplate.updateMulti(query, update, deviceModel.COLLECTION_NAME);
 		return result.getModifiedCount()>0;
 	}
 	public deviceModel getById(String id) {
