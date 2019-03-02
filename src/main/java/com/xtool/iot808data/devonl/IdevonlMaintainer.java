@@ -8,6 +8,7 @@ public interface IdevonlMaintainer {
 	public boolean addRange(devonlModel[] data);
 	public boolean remove(String sno);
 	public boolean upsert(devonlModel data,boolean ignoreNull);
+    public boolean bupsert(devonlModel[] datas, boolean ignoreNull);
 	public boolean update(devonlModel data, boolean ignoreNull);
 	public deviceModel getById(String id);
 	public DataSearchResult<devonlModel> search(devonlCondition condition);

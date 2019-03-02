@@ -3,8 +3,10 @@ package com.xtool.iot808data.devonl;
 import java.util.Calendar;
 import java.util.Date;
 
+import com.mongodb.bulk.BulkWriteResult;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.BulkOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -53,7 +55,81 @@ public class devonlMaintainer implements IdevonlMaintainer {
 			return add(data);
 		}
 	}
+    
+    /**
+     * 批更新
+     * xiabing
+     * @param datas
+     * @param ignoreNull
+     * @return
+     */
+    @Override
+    public boolean bupsert(devonlModel[] datas, boolean ignoreNull)
+    {
+        BulkOperations ops = mongoTemplate.bulkOps(BulkOperations.BulkMode.UNORDERED, devonlModel.COLLECTION_NAME);
+        for (int i = 0; i < datas.length; i++)
+        {
+            devonlModel data = datas[i];
+            if (StringUtils.isEmpty(data.sno) || StringUtils.isEmpty(data.svrip))
+            {
+                return false;
+            }
+            
+            Update update = new Update();
+            update.set("svrname",data.svrname);
+            if (data.svrip!=null || !ignoreNull)
+            {
+                update.set("svrip", data.svrip);
+            }
+            if (data.svrport!=null || !ignoreNull)
+            {
+                update.set("svrport", data.svrport);
+            }
+            if (data.chnip!=null || !ignoreNull)
+            {
+                update.set("chnip", data.chnip);
+            }
+            if (data.chnport!=null || !ignoreNull)
+            {
+                update.set("chnport", data.chnport);
+            }
+            if (data.monip!=null || !ignoreNull)
+            {
+                update.set("monip", data.monip);
+            }
+            if (data.monport!=null || !ignoreNull)
+            {
+                update.set("monport", data.monport);
+            }
+            if (data.onltime!=null || !ignoreNull)
+            {
+                update.set("onltime", data.onltime);
+            }
+            if (data.isonl!=null || !ignoreNull)
+            {
+                update.set("isonl", data.isonl);
+            }
+            if (data.reftime!=null || !ignoreNull)
+            {
+                update.set("reftime", data.reftime);
+            }
+            if (data.refdura!=null || !ignoreNull)
+            {
+                update.set("refdura", data.refdura);
+            }
+            if (data.offtime!=null || !ignoreNull)
+            {
+                update.set("offtime", data.offtime);
+            }
 
+            Query query = new Query(Criteria.where("sno").is(data.getSno()));
+            ops.upsert(query, update);
+        }
+        BulkWriteResult result = ops.execute();
+        return result.getMatchedCount() > 0 || result.getInsertedCount() > 0;
+    }
+
+    
 	@Override
 	public boolean update(devonlModel data, boolean ignoreNull) {
 		if(data==null || data.sno==null || data.sno.equals(""))return false;
